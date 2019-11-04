@@ -13,7 +13,7 @@ const text = (() => {
   function init(_form, _items) {
     items = _items;
     _form.addEventListener('submit', formHandler);
-    
+
     for(let item of items.querySelectorAll('.item')){
       const checkbox = item.querySelector('.item__checkbox');
       checkbox.addEventListener('click', finish);
@@ -24,7 +24,7 @@ const text = (() => {
       const button = item.querySelector('.item__button');
       button.addEventListener('click', deleteItem);
     }
-    console.log(_items)
+    console.log(_items);
   }
 
     // TODO láta hluti í _items virka
@@ -36,7 +36,7 @@ const text = (() => {
 
     if (input.value.trim().length > 0) {
       add(input.value);
-      input.value = '';
+      input.value = "";
     }
   }
 
@@ -52,49 +52,55 @@ const text = (() => {
 
     parentNode.removeChild(target);
 
-    const input = el('input','item_edit');
-    input.setAttribute('type', 'text');
+    const input = el('input', 'item__edit'); 
+    input.setAttribute('type', 'text'); 
     input.value = textContent;
     console.log(input.value);
-    input.addEventListener('keyup',commit);
+    input.addEventListener('keyup',commit); 
 
-    const button = parentNode.querySelector('.item_button');
+    const button = parentNode.querySelector('.item__button');
+
     parentNode.insertBefore(input, button);
     input.focus();
-
   }
 
   // event handler fyrir það að klára að breyta færslu
   function commit(e) {
-    if(event.Keycode === 13) {
+    if(event.keyCode === 13){
       console.log(e.target);
+
       const newText = e.target.value;
       const parentNode = e.target.parentNode;
       parentNode.removeChild(e.target);
       
-      newTextEl = el('span', 'item_text', edit);
+      newTextEl = el('span', 'item__text', edit);
       newTextEl.appendChild(document.createTextNode(newText));
-      const button = parentNode.querySelector('.item_button');
+      
+      const button = parentNode.querySelector('.item__button');
+
+      parentNode.insertBefore(newTextEl, button);
+      
     }
   }
 
   // fall sem sér um að bæta við nýju item
   function add(value) {
+
     const newItem = el('li', 'item');
 
-    const newCheckbox = el('input', 'item_checkbox',finish);
-    newCheckbox.setAttribute('type', 'checkbox');
+    const newCheckbox = el('input', 'item__checkbox', finish);
+    newCheckbox.setAttribute('type', 'checkbox'); 
 
-    const newText = el('span', 'item_text', edit);
+    const newText = el('span', 'item__text', edit);
     newText.appendChild(document.createTextNode(value));
 
-    const newButton = el('button', 'item_button', deleteItem);
+    const newButton = el('button', 'item__button', deleteItem);
     newButton.appendChild(document.createTextNode('Eyða'));
 
     items.appendChild(newItem);
-    item.appendChild(newCheckbox);
-    item.appendChild(newText);
-    item.appendChild(newButton);
+    newItem.appendChild(newCheckbox);
+    newItem.appendChild(newText);
+    newItem.appendChild(newButton);
   }
 
   // event handler til að eyða færslu
@@ -107,17 +113,16 @@ const text = (() => {
 
   // hjálparfall til að útbúa element
   function el(type, className, clickHandler) {
-    const newElement = document.createElement(type);
+    var newElement = document.createElement(type); 
     if(className) {
-      newElement.classlist.add(className);
+      newElement.classList.add(className); 
     }
-
-    if(clickHandler) {
+    if(clickHandler) {  
       newElement.addEventListener('click', clickHandler);
     }
+    return newElement;  
+  }
 
-  return newElement;
-}
   return {
     init: init
   }
